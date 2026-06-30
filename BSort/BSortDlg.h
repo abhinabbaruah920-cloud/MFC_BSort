@@ -1,0 +1,38 @@
+
+// BSortDlg.h : header file
+//
+#include "DataDlg.h"
+#pragma once
+
+
+// CBSortDlg dialog
+class CBSortDlg : public CDialogEx
+{
+// Construction
+public:
+	CBSortDlg(CWnd* pParent = NULL);	// standard constructor
+	int arr[7];
+	int c1,c2,s1,s2;
+	DataDlg D;
+	void Processmsg();
+
+// Dialog Data
+	enum { IDD = IDD_BSORT_DIALOG };
+
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+
+
+// Implementation
+protected:
+	HICON m_hIcon;
+
+	// Generated message map functions
+	virtual BOOL OnInitDialog();
+	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+	afx_msg void OnPaint();
+	afx_msg HCURSOR OnQueryDragIcon();
+	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButton1();
+};
