@@ -43,7 +43,7 @@ void DataDlg::OnLbnSelchangeList1()
 
 void DataDlg::AddNo(int arr[],int size){
 	CString str;
-	for(int i=0;i<7;i++){
+	for(int i=0;i<size;i++){
 		CString temp;
 		temp.Format(_T("%d"),arr[i]);
 		str+=temp+(_T(" "));

@@ -6,6 +6,11 @@
 #include "BSort.h"
 #include "BSortDlg.h"
 #include "afxdialogex.h"
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <atlconv.h>
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,6 +70,7 @@ BEGIN_MESSAGE_MAP(CBSortDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CBSortDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_IMPORT, &CBSortDlg::OnBnClickedImport)
 END_MESSAGE_MAP()
 
 
@@ -75,11 +81,8 @@ BOOL CBSortDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// Add "About..." menu item to system menu.
-	int temp[] ={90,80,40,60,10,30,50};
-	for(int i=0;i<7;i++){
-		arr[i]=temp[i];
-	}
 	c1=c2=s1=s2=-1;
+	size=0;
 	D.Create(IDD_DIALOG1,this);
 	D.ShowWindow(SW_SHOW);
 	// IDM_ABOUTBOX must be in the system command range.
@@ -131,7 +134,7 @@ void CBSortDlg::OnPaint()
 {
 	CPaintDC dc(this);
 	int x=20;
-	for(int i=0;i<7;i++){
+	for(int i=0;i<size;i++){
 		CBrush brush;
 		if(i==s1 || i==s2){
 			brush.CreateSolidBrush(RGB(255,155,0));}
@@ -191,9 +194,9 @@ HCURSOR CBSortDlg::OnQueryDragIcon()
 
 void CBSortDlg::OnBnClickedButton1()
 {
-	D.AddNo(arr,7);
-	for(int i=0;i<7-1;i++){
-		for(int j=0;j<7-i-1;j++){
+	D.AddNo(arr,size);
+	for(int i=0;i<size-1;i++){
+		for(int j=0;j<size-i-1;j++){
 			c1=j;
 			c2=j+1;
 			s1=s2=-1;
@@ -214,7 +217,7 @@ void CBSortDlg::OnBnClickedButton1()
 				arr[j+1]=temp;
 				s1=j;
 				s2=j+1;
-				D.AddNo(arr,7);
+				D.AddNo(arr,size);
 				Invalidate();
 				UpdateWindow();
 				Processmsg();
@@ -228,3 +231,36 @@ void CBSortDlg::OnBnClickedButton1()
 	Processmsg();
 	Sleep(100);
 }
+
+
+void CBSortDlg::OnBnClickedImport()
+{
+    CFileDialog dlg(TRUE,_T("csv"),NULL,OFN_FILEMUSTEXIST,_T("CSV Files (*.csv)|*.csv||"));
+    if(dlg.DoModal()==IDOK){
+        CString filename= dlg.GetPathName();
+        CStdioFile file;
+    if(!file.Open(filename,CFile::modeRead)){
+        AfxMessageBox(_T("Cannot open file."));
+            return;
+        }
+	CString line;
+	size = 0;
+		while(file.ReadString(line)){
+			line.Trim();
+		    int pos=0;
+		    CString token;
+	    while(!(token=line.Tokenize(_T(","),pos)).IsEmpty()){
+        token.Trim();
+        if(!token.IsEmpty()&&size <100){
+            arr[size++] = _ttoi(token);
+        }
+    }
+}
+        file.Close();
+    Invalidate();
+    UpdateWindow();
+    }
+}
+
+
+

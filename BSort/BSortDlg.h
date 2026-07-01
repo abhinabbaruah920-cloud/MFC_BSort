@@ -1,6 +1,7 @@
 
 // BSortDlg.h : header file
 //
+
 #include "DataDlg.h"
 #pragma once
 
@@ -11,7 +12,8 @@ class CBSortDlg : public CDialogEx
 // Construction
 public:
 	CBSortDlg(CWnd* pParent = NULL);	// standard constructor
-	int arr[7];
+	int arr[90];
+	int size;
 	int c1,c2,s1,s2;
 	DataDlg D;
 	void Processmsg();
@@ -35,4 +37,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedImport();
 };
