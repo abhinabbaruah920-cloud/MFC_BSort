@@ -17,6 +17,9 @@ public:
 	int c1,c2,s1,s2;
 	DataDlg D;
 	void Processmsg();
+	CComboBox comboAlgo;
+	void bubble();
+	void selection();
 
 // Dialog Data
 	enum { IDD = IDD_BSORT_DIALOG };
@@ -38,4 +41,5 @@ protected:
 public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedImport();
+	afx_msg void OnCbnSelchangeCombo1();
 };

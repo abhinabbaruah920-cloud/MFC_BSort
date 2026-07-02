@@ -63,6 +63,7 @@ CBSortDlg::CBSortDlg(CWnd* pParent /*=NULL*/)
 void CBSortDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX,IDC_COMBO1, comboAlgo);
 }
 
 BEGIN_MESSAGE_MAP(CBSortDlg, CDialogEx)
@@ -71,6 +72,7 @@ BEGIN_MESSAGE_MAP(CBSortDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CBSortDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_IMPORT, &CBSortDlg::OnBnClickedImport)
+	ON_CBN_SELCHANGE(IDC_COMBO1, &CBSortDlg::OnCbnSelchangeCombo1)
 END_MESSAGE_MAP()
 
 
@@ -85,6 +87,12 @@ BOOL CBSortDlg::OnInitDialog()
 	size=0;
 	D.Create(IDD_DIALOG1,this);
 	D.ShowWindow(SW_SHOW);
+	comboAlgo.AddString(_T("SELECT ALGO"));
+	comboAlgo.AddString(_T("Bubble Sort"));
+	comboAlgo.AddString(_T("Selection Sort"));
+	comboAlgo.SetCurSel(0);
+
+
 	// IDM_ABOUTBOX must be in the system command range.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
@@ -194,42 +202,23 @@ HCURSOR CBSortDlg::OnQueryDragIcon()
 
 void CBSortDlg::OnBnClickedButton1()
 {
-	D.AddNo(arr,size);
-	for(int i=0;i<size-1;i++){
-		for(int j=0;j<size-i-1;j++){
-			c1=j;
-			c2=j+1;
-			s1=s2=-1;
-			Invalidate();
-			UpdateWindow();
-			Processmsg();
-			Sleep(100);
 
-			if(arr[j]>arr[j+1]){
-				s1=j;
-				s2=j+1;
-				Invalidate();
-				UpdateWindow();
-				Processmsg();
-				Sleep(100);
-				int temp=arr[j];
-				arr[j]=arr[j+1];
-				arr[j+1]=temp;
-				s1=j;
-				s2=j+1;
-				D.AddNo(arr,size);
-				Invalidate();
-				UpdateWindow();
-				Processmsg();
-				Sleep(100);
-			}
-		}
+int choice = comboAlgo.GetCurSel();
+
+	if(choice ==0){
+		AfxMessageBox(_T("Please select sorting algorithm"));
+		return;
 	}
-	s1=s2=c1=c2=-1;
-	Invalidate();
-	UpdateWindow();
-	Processmsg();
-	Sleep(100);
+		switch(choice){
+			case 1:
+				D.list.ResetContent();
+				bubble();
+				break;
+			case 2:
+				D.list.ResetContent();
+				selection();
+				break;
+		}
 }
 
 
@@ -263,4 +252,100 @@ void CBSortDlg::OnBnClickedImport()
 }
 
 
+void CBSortDlg::OnCbnSelchangeCombo1()
+{
+	// TODO: Add your control notification handler code here
+}
 
+
+void CBSortDlg:: bubble(){
+	
+	D.AddNo(arr,size);
+	for(int i=0;i<size-1;i++){
+		for(int j=0;j<size-i-1;j++){
+			c1=j;
+			c2=j+1;
+			s1=s2=-1;
+			Invalidate();
+			UpdateWindow();
+			Processmsg();
+			Sleep(100);
+
+			if(arr[j]>arr[j+1]){
+				s1=j;
+				s2=j+1;
+				Invalidate();
+				UpdateWindow();
+				Processmsg();
+				Sleep(100);
+				int temp=arr[j];
+				arr[j]=arr[j+1];
+				arr[j+1]=temp;
+				s1=j;
+				s2=j+1;
+
+				D.AddNo(arr,size);
+				Invalidate();
+				UpdateWindow();
+				Processmsg();
+				Sleep(100);
+			}
+		}
+	}
+	s1=s2=c1=c2=-1;
+	Invalidate();
+	UpdateWindow();
+	Processmsg();
+	Sleep(100);
+
+}
+
+void CBSortDlg:: selection(){
+	D.AddNo(arr,size);
+	for(int i=0;i<size-1;i++){
+    int min =i;
+		for(int j=i+1;j<size;j++){
+			c1=min;
+			c2=j;
+			s1=s2=-1;
+
+			Invalidate();
+			UpdateWindow();
+			Processmsg();
+			Sleep(100);
+			if(arr[j] < arr[min]){
+				min=j;
+				s1=min;
+				s2=-1;
+				Invalidate();
+				UpdateWindow();
+				Processmsg();
+				Sleep(100);
+        }
+    }
+    if(min!=i){
+        s1=i;
+        s2= min;
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(100);
+
+        int temp=arr[i];
+        arr[i]= arr[min];
+        arr[min]=temp;
+
+        D.AddNo(arr,size);
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(100);
+    }
+}
+
+c1=c2=s1=s2=-1;
+Invalidate();
+UpdateWindow();
+Processmsg();
+Sleep(100);
+}
