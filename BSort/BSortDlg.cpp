@@ -90,6 +90,7 @@ BOOL CBSortDlg::OnInitDialog()
 	comboAlgo.AddString(_T("SELECT ALGO"));
 	comboAlgo.AddString(_T("Bubble Sort"));
 	comboAlgo.AddString(_T("Selection Sort"));
+	comboAlgo.AddString(_T("Insertion Sort"));
 	comboAlgo.SetCurSel(0);
 
 
@@ -141,7 +142,7 @@ void CBSortDlg::OnSysCommand(UINT nID, LPARAM lParam)
 void CBSortDlg::OnPaint()
 {
 	CPaintDC dc(this);
-	int x=20;
+	int x=30;
 	for(int i=0;i<size;i++){
 		CBrush brush;
 		if(i==s1 || i==s2){
@@ -153,7 +154,7 @@ void CBSortDlg::OnPaint()
 		}
 		dc.SelectObject(&brush);
 		int h = arr[i]*2;
-		dc.Rectangle(x,300-h,x+30,300);
+		dc.Rectangle(x,300-h,x+20,300);
 		x+=40;
 	}
 
@@ -218,6 +219,10 @@ int choice = comboAlgo.GetCurSel();
 				D.list.ResetContent();
 				selection();
 				break;
+			case 3:
+				D.list.ResetContent();
+				insertion();
+				break;
 		}
 }
 
@@ -269,7 +274,7 @@ void CBSortDlg:: bubble(){
 			Invalidate();
 			UpdateWindow();
 			Processmsg();
-			Sleep(100);
+			Sleep(150);
 
 			if(arr[j]>arr[j+1]){
 				s1=j;
@@ -277,7 +282,7 @@ void CBSortDlg:: bubble(){
 				Invalidate();
 				UpdateWindow();
 				Processmsg();
-				Sleep(100);
+				Sleep(150);
 				int temp=arr[j];
 				arr[j]=arr[j+1];
 				arr[j+1]=temp;
@@ -288,7 +293,7 @@ void CBSortDlg:: bubble(){
 				Invalidate();
 				UpdateWindow();
 				Processmsg();
-				Sleep(100);
+				Sleep(150);
 			}
 		}
 	}
@@ -296,7 +301,7 @@ void CBSortDlg:: bubble(){
 	Invalidate();
 	UpdateWindow();
 	Processmsg();
-	Sleep(100);
+	Sleep(150);
 
 }
 
@@ -312,7 +317,7 @@ void CBSortDlg:: selection(){
 			Invalidate();
 			UpdateWindow();
 			Processmsg();
-			Sleep(100);
+			Sleep(150);
 			if(arr[j] < arr[min]){
 				min=j;
 				s1=min;
@@ -320,7 +325,7 @@ void CBSortDlg:: selection(){
 				Invalidate();
 				UpdateWindow();
 				Processmsg();
-				Sleep(100);
+				Sleep(150);
         }
     }
     if(min!=i){
@@ -329,7 +334,7 @@ void CBSortDlg:: selection(){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(100);
+        Sleep(150);
 
         int temp=arr[i];
         arr[i]= arr[min];
@@ -339,7 +344,7 @@ void CBSortDlg:: selection(){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(100);
+        Sleep(150);
     }
 }
 
@@ -347,5 +352,47 @@ c1=c2=s1=s2=-1;
 Invalidate();
 UpdateWindow();
 Processmsg();
-Sleep(100);
+Sleep(150);
+}
+
+void CBSortDlg::insertion(){
+    D.AddNo(arr,size);
+    for(int i=1;i<size;i++){
+        int j=i;
+        while(j>0){
+            c1=j-1;
+            c2=j;
+            s1=s2=-1;
+            Invalidate();
+            UpdateWindow();
+            Processmsg();
+            Sleep(150);
+            if(arr[j-1]>arr[j]){
+                s1=j-1;
+                s2=j;
+                Invalidate();
+                UpdateWindow();
+                Processmsg();
+                Sleep(150);
+
+                int temp=arr[j-1];
+                arr[j-1]=arr[j];
+                arr[j]=temp;
+                D.AddNo(arr,size);
+                Invalidate();
+                UpdateWindow();
+                Processmsg();
+                Sleep(150);
+                j--;
+            }
+			else{
+                break;
+            }
+        }
+    }
+c1=c2=s1=s2=-1;
+    Invalidate();
+    UpdateWindow();
+    Processmsg();
+    Sleep(100);
 }

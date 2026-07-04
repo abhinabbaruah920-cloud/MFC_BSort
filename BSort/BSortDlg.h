@@ -20,6 +20,7 @@ public:
 	CComboBox comboAlgo;
 	void bubble();
 	void selection();
+	void insertion();
 
 // Dialog Data
 	enum { IDD = IDD_BSORT_DIALOG };
