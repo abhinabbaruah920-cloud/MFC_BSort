@@ -6,10 +6,12 @@
 #include "BSort.h"
 #include "BSortDlg.h"
 #include "afxdialogex.h"
+#include <atlconv.h>
+// Header Files for taking csv file as input
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <atlconv.h>
+
 
 
 #ifdef _DEBUG
@@ -63,7 +65,7 @@ CBSortDlg::CBSortDlg(CWnd* pParent /*=NULL*/)
 void CBSortDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX,IDC_COMBO1, comboAlgo);
+	DDX_Control(pDX,IDC_COMBO1,comboAlgo); // DDX control for ComboBox
 }
 
 BEGIN_MESSAGE_MAP(CBSortDlg, CDialogEx)
@@ -83,16 +85,20 @@ BOOL CBSortDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// Add "About..." menu item to system menu.
-	c1=c2=s1=s2=-1;
-	size=0;
-	D.Create(IDD_DIALOG1,this);
-	D.ShowWindow(SW_SHOW);
-	comboAlgo.AddString(_T("SELECT ALGO"));
+
+	c1=c2=s1=s2=-1; //Initialize CPaintDC variables
+	size=0; // Initialize array size
+
+	D.Create(IDD_DIALOG1,this);		// Initialize Data Dialog box 
+	D.ShowWindow(SW_SHOW);			// Show Data Dialog window function
+
+	// Adding Strings to ComboBox
+	comboAlgo.AddString(_T("SELECT ALGO"));			
 	comboAlgo.AddString(_T("Bubble Sort"));
 	comboAlgo.AddString(_T("Selection Sort"));
 	comboAlgo.AddString(_T("Insertion Sort"));
 	comboAlgo.AddString(_T("Quick Sort"));
-	comboAlgo.SetCurSel(0);
+	comboAlgo.SetCurSel(0);		// Setting "SELECT ALGO" as the first Static
 
 
 	// IDM_ABOUTBOX must be in the system command range.
@@ -140,21 +146,23 @@ void CBSortDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CBSortDlg::OnPaint()
+void CBSortDlg::OnPaint()			// OnPaint function
 {
 	CPaintDC dc(this);
 	int x=30;
 	for(int i=0;i<size;i++){
 		CBrush brush;
 		if(i==s1 || i==s2){
-			brush.CreateSolidBrush(RGB(255,155,0));}
+			brush.CreateSolidBrush(RGB(255,155,0));}		// ORANGE when Swapping
 		else if(i==c1 || i==c2){
-			brush.CreateSolidBrush(RGB(0,255,0));
+			brush.CreateSolidBrush(RGB(0,255,0));			// GREEN when Comparing
 		}else{
-			brush.CreateSolidBrush(RGB(0,0,255));	
+			brush.CreateSolidBrush(RGB(0,0,255));			// Normal BLUE
 		}
-		dc.SelectObject(&brush);
+		dc.SelectObject(&brush);		// Selecting brush to Paint
 		int h = arr[i]*2;
+
+		// Defining the Bar Dimensions 
 		dc.Rectangle(x,300-h,x+20,300);
 		x+=40;
 	}
@@ -185,9 +193,9 @@ void CBSortDlg::OnPaint()
 }
 
 
-void CBSortDlg::Processmsg(){
+void CBSortDlg::Processmsg(){		// Extending Processmsg Function to handle Window messages
 	MSG msg;
-	while(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
+	while(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){		// Removing messages from Window Message Queue
 	DispatchMessage(&msg);
 	}
 }
@@ -202,7 +210,7 @@ HCURSOR CBSortDlg::OnQueryDragIcon()
 
 
 
-void CBSortDlg::OnBnClickedButton1()
+void CBSortDlg::OnBnClickedButton1()		// START BUTTON
 {
 
 int choice = comboAlgo.GetCurSel();
@@ -232,7 +240,7 @@ int choice = comboAlgo.GetCurSel();
 }
 
 
-void CBSortDlg::OnBnClickedImport()
+void CBSortDlg::OnBnClickedImport()			// IMPORT button to import numerical CSV file
 {
     CFileDialog dlg(TRUE,_T("csv"),NULL,OFN_FILEMUSTEXIST,_T("CSV Files (*.csv)|*.csv||"));
     if(dlg.DoModal()==IDOK){
@@ -268,7 +276,7 @@ void CBSortDlg::OnCbnSelchangeCombo1()
 }
 
 
-void CBSortDlg:: bubble(){
+void CBSortDlg:: bubble(){		//Extending Bubble Sort funtion and implementation
 	
 	D.AddNo(arr,size);
 	for(int i=0;i<size-1;i++){
@@ -310,7 +318,7 @@ void CBSortDlg:: bubble(){
 
 }
 
-void CBSortDlg:: selection(){
+void CBSortDlg:: selection(){			// Extending Selection Sort funtion and implementation
 	D.AddNo(arr,size);
 	for(int i=0;i<size-1;i++){
     int min =i;
@@ -360,7 +368,7 @@ Processmsg();
 Sleep(150);
 }
 
-void CBSortDlg::insertion(){
+void CBSortDlg::insertion(){				// Extending Insertion Sort funtion and implementation
     D.AddNo(arr,size);
     for(int i=1;i<size;i++){
         int j=i;
@@ -401,6 +409,8 @@ c1=c2=s1=s2=-1;
     Processmsg();
     Sleep(100);
 }
+
+// QUICK SORT implementation
 
 void CBSortDlg::quick(){
     D.AddNo(arr,size);
