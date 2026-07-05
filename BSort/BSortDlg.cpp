@@ -91,6 +91,7 @@ BOOL CBSortDlg::OnInitDialog()
 	comboAlgo.AddString(_T("Bubble Sort"));
 	comboAlgo.AddString(_T("Selection Sort"));
 	comboAlgo.AddString(_T("Insertion Sort"));
+	comboAlgo.AddString(_T("Quick Sort"));
 	comboAlgo.SetCurSel(0);
 
 
@@ -222,6 +223,10 @@ int choice = comboAlgo.GetCurSel();
 			case 3:
 				D.list.ResetContent();
 				insertion();
+				break;
+			case 4:
+				D.list.ResetContent();
+				quick();
 				break;
 		}
 }
@@ -395,4 +400,86 @@ c1=c2=s1=s2=-1;
     UpdateWindow();
     Processmsg();
     Sleep(100);
+}
+
+void CBSortDlg::quick(){
+    D.AddNo(arr,size);
+    quicksort(0,size-1);
+    c1=c2=s1=s2=-1;
+
+    Invalidate();
+    UpdateWindow();
+    Processmsg();
+    Sleep(150);
+}
+
+void CBSortDlg::quicksort(int low,int high){
+    if(low<high){
+        int pivotindex=partition(low,high);
+        quicksort(low,pivotindex-1);
+        quicksort(pivotindex+1,high);
+		}
+}
+
+int CBSortDlg::partition(int low,int high){
+    int pivot=arr[high];
+    int i=low-1;
+    for(int j=low;j<high; j++){
+        c1=j;
+        c2=high;
+        s1=s2=-1;
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(150);
+
+        if(arr[j]<pivot){
+            i++;
+            if(i!=j){
+                c1=c2=-1;
+                s1=i;
+                s2=j;
+                Invalidate();
+                UpdateWindow();
+                Processmsg();
+                Sleep(150);
+
+                int temp=arr[i];
+                arr[i]=arr[j];
+                arr[j]=temp;
+                D.AddNo(arr,size);
+                Invalidate();
+                UpdateWindow();
+                Processmsg();
+                Sleep(150);
+            }
+        }
+    }
+    c1=c2=s1=s2=-1;
+    if(i+1 !=high){
+        s1=i+1;
+        s2=high;
+
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(150);
+
+        int temp=arr[i+1];
+        arr[i+1]=arr[high];
+        arr[high]=temp;
+
+        D.AddNo(arr,size);
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(150);
+    }
+    
+c1=c2=s1=s2=-1;
+    Invalidate();
+    UpdateWindow();
+    Processmsg();
+    Sleep(150);
+    return i+1;
 }

@@ -21,6 +21,9 @@ public:
 	void bubble();
 	void selection();
 	void insertion();
+	void quick();
+	int partition(int low,int high);
+	void quicksort(int low,int high);
 
 // Dialog Data
 	enum { IDD = IDD_BSORT_DIALOG };
