@@ -11,22 +11,30 @@ public:
 	MergeDialog(CWnd* pParent = NULL);   // standard constructor
 	virtual ~MergeDialog();
 
+	//Declaring Left Array, Right Array and Merged Array(Result) for storing elements
 	int LArr[10];
     int RArr[10];
-    int MArr[10];
+    int MArr[20];
 
+	// Declaring Left sub, Right sub, Merged array for current stored elements
     int LSize;
     int RSize;
     int MSize;
 
-    // Current compared elements
+    // Index of Currently compared elements (Left and Right)
     int CLeft;
     int CRight;
 
-    // Functions called from CBSortDlg
+	// Copies the given left and right sub arrays into LArr and RArr
+	// n1=left sub array elements and n2= right sub array elements
     void SetArr(int L[], int n1, int R[], int n2);
+
+	// Sets the indexes of the elements currently being compared
     void SetComp(int LIndex,int RIndex);
+
+	// adding value to Merged array
     void AddMValue(int value);
+	//Resets the merge visualization data for the next merge operation
     void RMerge();
 
 // Dialog Data
@@ -37,5 +45,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	// declaring On Paint function for drawing
 	afx_msg void OnPaint();
 };
