@@ -102,6 +102,7 @@
     <ClInclude Include="BSort.h" />
     <ClInclude Include="BSortDlg.h" />
     <ClInclude Include="DataDlg.h" />
+    <ClInclude Include="MergeDialog.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="BSort.cpp" />
     <ClCompile Include="BSortDlg.cpp" />
     <ClCompile Include="DataDlg.cpp" />
+    <ClCompile Include="MergeDialog.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

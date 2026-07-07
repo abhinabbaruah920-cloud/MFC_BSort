@@ -1,15 +1,18 @@
 
 // BSortDlg.cpp : implementation file
 //
-
 #include "stdafx.h"
+#include "Resource.h"
 #include "BSort.h"
 #include "BSortDlg.h"
 #include "afxdialogex.h"
+#include <atlconv.h>
+// Header Files for taking csv file as input
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <atlconv.h>
+// Merge Dialog 
+#include "MergeDialog.h"
 
 
 #ifdef _DEBUG
@@ -63,7 +66,7 @@ CBSortDlg::CBSortDlg(CWnd* pParent /*=NULL*/)
 void CBSortDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX,IDC_COMBO1, comboAlgo);
+	DDX_Control(pDX,IDC_COMBO1,comboAlgo); // DDX control for ComboBox
 }
 
 BEGIN_MESSAGE_MAP(CBSortDlg, CDialogEx)
@@ -83,16 +86,22 @@ BOOL CBSortDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// Add "About..." menu item to system menu.
-	c1=c2=s1=s2=-1;
-	size=0;
-	D.Create(IDD_DIALOG1,this);
-	D.ShowWindow(SW_SHOW);
-	comboAlgo.AddString(_T("SELECT ALGO"));
+
+	c1=c2=s1=s2=-1; //Initialize CPaintDC variables
+	size=0; // Initialize array size
+
+	D.Create(IDD_DATADIALOG,this);				// Initialize Data Dialog box 
+	D.ShowWindow(SW_SHOW);						// Show Data Dialog window function
+	MD.Create(IDD_MERGEDIALOG,this);			// Creating the merge Dialog
+
+	// Adding Strings to ComboBox
+	comboAlgo.AddString(_T("SELECT ALGO"));			
 	comboAlgo.AddString(_T("Bubble Sort"));
 	comboAlgo.AddString(_T("Selection Sort"));
 	comboAlgo.AddString(_T("Insertion Sort"));
 	comboAlgo.AddString(_T("Quick Sort"));
-	comboAlgo.SetCurSel(0);
+	comboAlgo.AddString(_T("Merge Sort"));
+	comboAlgo.SetCurSel(0);		// Setting "SELECT ALGO" as the first option
 
 
 	// IDM_ABOUTBOX must be in the system command range.
@@ -140,21 +149,23 @@ void CBSortDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CBSortDlg::OnPaint()
+void CBSortDlg::OnPaint()			// OnPaint function
 {
 	CPaintDC dc(this);
 	int x=30;
 	for(int i=0;i<size;i++){
 		CBrush brush;
 		if(i==s1 || i==s2){
-			brush.CreateSolidBrush(RGB(255,155,0));}
+			brush.CreateSolidBrush(RGB(255,155,0));}		// ORANGE when Swapping
 		else if(i==c1 || i==c2){
-			brush.CreateSolidBrush(RGB(0,255,0));
+			brush.CreateSolidBrush(RGB(0,255,0));			// GREEN when Comparing
 		}else{
-			brush.CreateSolidBrush(RGB(0,0,255));	
+			brush.CreateSolidBrush(RGB(0,0,255));			// Normal BLUE
 		}
-		dc.SelectObject(&brush);
+		dc.SelectObject(&brush);		// Selecting brush to Paint
 		int h = arr[i]*2;
+
+		// Defining the Bar Dimensions 
 		dc.Rectangle(x,300-h,x+20,300);
 		x+=40;
 	}
@@ -185,9 +196,9 @@ void CBSortDlg::OnPaint()
 }
 
 
-void CBSortDlg::Processmsg(){
+void CBSortDlg::Processmsg(){		// Extending Processmsg Function to handle Window messages
 	MSG msg;
-	while(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
+	while(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){		// Removing messages from Window Message Queue
 	DispatchMessage(&msg);
 	}
 }
@@ -202,7 +213,7 @@ HCURSOR CBSortDlg::OnQueryDragIcon()
 
 
 
-void CBSortDlg::OnBnClickedButton1()
+void CBSortDlg::OnBnClickedButton1()		// START BUTTON
 {
 
 int choice = comboAlgo.GetCurSel();
@@ -228,11 +239,16 @@ int choice = comboAlgo.GetCurSel();
 				D.list.ResetContent();
 				quick();
 				break;
+			case 5:
+				D.list.ResetContent();
+				MD.ShowWindow(SW_SHOW);		// Showing the merge window
+				mergesort(0,size-1);
+				break;
 		}
 }
 
 
-void CBSortDlg::OnBnClickedImport()
+void CBSortDlg::OnBnClickedImport()			// IMPORT button to import numerical CSV file
 {
     CFileDialog dlg(TRUE,_T("csv"),NULL,OFN_FILEMUSTEXIST,_T("CSV Files (*.csv)|*.csv||"));
     if(dlg.DoModal()==IDOK){
@@ -268,7 +284,7 @@ void CBSortDlg::OnCbnSelchangeCombo1()
 }
 
 
-void CBSortDlg:: bubble(){
+void CBSortDlg:: bubble(){		//Extending Bubble Sort funtion and implementation
 	
 	D.AddNo(arr,size);
 	for(int i=0;i<size-1;i++){
@@ -310,7 +326,7 @@ void CBSortDlg:: bubble(){
 
 }
 
-void CBSortDlg:: selection(){
+void CBSortDlg:: selection(){			// Extending Selection Sort funtion and implementation
 	D.AddNo(arr,size);
 	for(int i=0;i<size-1;i++){
     int min =i;
@@ -360,7 +376,7 @@ Processmsg();
 Sleep(150);
 }
 
-void CBSortDlg::insertion(){
+void CBSortDlg::insertion(){				// Extending Insertion Sort funtion and implementation
     D.AddNo(arr,size);
     for(int i=1;i<size;i++){
         int j=i;
@@ -401,6 +417,8 @@ c1=c2=s1=s2=-1;
     Processmsg();
     Sleep(100);
 }
+
+// QUICK SORT implementation
 
 void CBSortDlg::quick(){
     D.AddNo(arr,size);
@@ -482,4 +500,106 @@ c1=c2=s1=s2=-1;
     Processmsg();
     Sleep(150);
     return i+1;
+}
+
+// Merge sort implementation
+void CBSortDlg::mergesort(int left,int right){
+    // Breaking of array and calling merge function to sort and piece back
+	if(left<right){	
+        int mid=left+(right-left)/2;
+        mergesort(left,mid);
+        mergesort(mid+1,right);
+        merge(left,mid,right);
+    }
+}
+
+//Sorting of elements
+void CBSortDlg::merge(int left,int mid,int right){
+    int L[10];
+    int R[10];
+    int n1=mid-left+1;
+    int n2=right-mid;
+    int i,j,k;
+
+    for(i=0;i<n1;i++){
+        L[i]=arr[left+i];
+    }
+    for(j=0;j<n2;j++){
+        R[j]=arr[mid+1+j];
+    }
+    MD.SetArr(L,n1,R,n2);
+    Processmsg();
+    Sleep(750);
+    i=j=0;
+    k=left;
+
+    while(i<n1 && j<n2){
+        s1=s2=-1;
+
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(750);
+
+        if(L[i]<=R[j]){
+            arr[k]=L[i];
+            MD.AddMValue(L[i]);
+            i++;
+        }else{
+            arr[k]=R[j];
+            MD.AddMValue(R[j]);
+            j++;
+        }
+
+		s1=k;
+        s2=-1;
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(750);
+        k++;
+    }
+    while(i<n1){
+		s1=s2=-1;
+
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(750);
+        arr[k]= L[i];
+        MD.AddMValue(L[i]);
+        s1= k;
+		s2=-1;
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(750);
+        i++;
+        k++;
+    }
+
+    while(j<n2){
+        s1=s2=-1;
+
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(750);
+
+        arr[k]=R[j];
+        MD.AddMValue(R[j]);
+
+        Invalidate();
+        UpdateWindow();
+        Processmsg();
+        Sleep(750);
+        j++;
+        k++;
+    }
+    D.AddNo(arr,size);
+	s1=s2=-1;
+    Invalidate();
+    UpdateWindow();
+    Processmsg();
+    Sleep(750);
 }

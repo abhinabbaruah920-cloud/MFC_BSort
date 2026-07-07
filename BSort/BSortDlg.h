@@ -1,7 +1,7 @@
 
 // BSortDlg.h : header file
 //
-
+#include "MergeDialog.h"
 #include "DataDlg.h"
 #pragma once
 
@@ -12,15 +12,26 @@ class CBSortDlg : public CDialogEx
 // Construction
 public:
 	CBSortDlg(CWnd* pParent = NULL);	// standard constructor
-	int arr[90];
+	
+	// Declaring variables for Array and CPaintDC
+	int arr[15];
 	int size;
 	int c1,c2,s1,s2;
+	// Object Creation for Data Dialog box and Merge Dialog box
 	DataDlg D;
+	MergeDialog MD;
+	// Message Processing Function
 	void Processmsg();
+	// Object Creation for ComboBox: DropList
 	CComboBox comboAlgo;
+	// Declaring Functions for Sorting
 	void bubble();
 	void selection();
 	void insertion();
+	// Merge Sort Function Declaration
+	void mergesort(int left,int right);
+	void merge(int left,int mid,int right);
+	//Quick Sort Function Declaration
 	void quick();
 	int partition(int low,int high);
 	void quicksort(int low,int high);
