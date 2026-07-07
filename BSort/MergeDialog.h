@@ -21,16 +21,12 @@ public:
     int RSize;
     int MSize;
 
-    // Index of Currently compared elements (Left and Right)
-    int CLeft;
-    int CRight;
-
 	// Copies the given left and right sub arrays into LArr and RArr
 	// n1=left sub array elements and n2= right sub array elements
     void SetArr(int L[], int n1, int R[], int n2);
 
 	// Sets the indexes of the elements currently being compared
-    void SetComp(int LIndex,int RIndex);
+
 
 	// adding value to Merged array
     void AddMValue(int value);
