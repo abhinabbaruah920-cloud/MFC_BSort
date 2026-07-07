@@ -529,7 +529,7 @@ void CBSortDlg::merge(int left,int mid,int right){
     }
     MD.SetArr(L,n1,R,n2);
     Processmsg();
-    Sleep(750);
+    Sleep(550);
     i=j=0;
     k=left;
 
@@ -539,7 +539,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(750);
+        Sleep(550);
 
         if(L[i]<=R[j]){
             arr[k]=L[i];
@@ -556,7 +556,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(750);
+        Sleep(550);
         k++;
     }
     while(i<n1){
@@ -565,7 +565,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(750);
+        Sleep(550);
         arr[k]= L[i];
         MD.AddMValue(L[i]);
         s1= k;
@@ -573,7 +573,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(750);
+        Sleep(550);
         i++;
         k++;
     }
@@ -584,7 +584,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(750);
+        Sleep(550);
 
         arr[k]=R[j];
         MD.AddMValue(R[j]);
@@ -592,7 +592,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(750);
+        Sleep(550);
         j++;
         k++;
     }
@@ -601,5 +601,5 @@ void CBSortDlg::merge(int left,int mid,int right){
     Invalidate();
     UpdateWindow();
     Processmsg();
-    Sleep(750);
+    Sleep(550);
 }
