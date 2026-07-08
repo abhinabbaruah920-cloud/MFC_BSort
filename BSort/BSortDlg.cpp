@@ -89,8 +89,9 @@ BOOL CBSortDlg::OnInitDialog()
 
 	c1=c2=s1=s2=-1; //Initialize CPaintDC variables
 	size=0; // Initialize array size
-
+	SetWindowPos(NULL,700,110,0,0,SWP_NOSIZE|SWP_NOZORDER);
 	D.Create(IDD_DATADIALOG,this);				// Initialize Data Dialog box 
+	D.SetWindowPos(NULL,100,110,0,0,SWP_NOSIZE|SWP_NOZORDER);
 	D.ShowWindow(SW_SHOW);						// Show Data Dialog window function
 	MD.Create(IDD_MERGEDIALOG,this);			// Creating the merge Dialog
 
@@ -215,32 +216,40 @@ HCURSOR CBSortDlg::OnQueryDragIcon()
 
 void CBSortDlg::OnBnClickedButton1()		// START BUTTON
 {
-
+	if(size==0){
+		AfxMessageBox(_T("Import CSV file first !!"));
+		return;
+	}
 int choice = comboAlgo.GetCurSel();
 
-	if(choice ==0){
+	if(size!=0 && choice ==0){
 		AfxMessageBox(_T("Please select sorting algorithm"));
 		return;
 	}
 		switch(choice){
 			case 1:
 				D.list.ResetContent();
+				MD.ShowWindow(SW_HIDE);
 				bubble();
 				break;
 			case 2:
 				D.list.ResetContent();
+				MD.ShowWindow(SW_HIDE);
 				selection();
 				break;
 			case 3:
 				D.list.ResetContent();
+				MD.ShowWindow(SW_HIDE);
 				insertion();
 				break;
 			case 4:
 				D.list.ResetContent();
+				MD.ShowWindow(SW_HIDE);
 				quick();
 				break;
 			case 5:
 				D.list.ResetContent();
+				MD.SetWindowPos(NULL,300,600,0,0,SWP_NOSIZE|SWP_NOZORDER);
 				MD.ShowWindow(SW_SHOW);		// Showing the merge window
 				mergesort(0,size-1);
 				break;
@@ -249,11 +258,12 @@ int choice = comboAlgo.GetCurSel();
 
 
 void CBSortDlg::OnBnClickedImport()			// IMPORT button to import numerical CSV file
-{
+{		
+	CString filename;
+	CStdioFile file;
     CFileDialog dlg(TRUE,_T("csv"),NULL,OFN_FILEMUSTEXIST,_T("CSV Files (*.csv)|*.csv||"));
     if(dlg.DoModal()==IDOK){
-        CString filename= dlg.GetPathName();
-        CStdioFile file;
+        filename= dlg.GetPathName();
     if(!file.Open(filename,CFile::modeRead)){
         AfxMessageBox(_T("Cannot open file."));
             return;

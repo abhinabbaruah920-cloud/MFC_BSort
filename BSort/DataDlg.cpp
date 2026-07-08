@@ -30,6 +30,7 @@ void DataDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(DataDlg, CDialogEx)
 	ON_LBN_SELCHANGE(IDC_LIST1, &DataDlg::OnLbnSelchangeList1)
+	ON_BN_CLICKED(IDCANCEL, &DataDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -50,4 +51,11 @@ void DataDlg::AddNo(int arr[],int size){
 	}
 	list.AddString(str);
 	list.SetCurSel(list.GetCount()-1);
+}
+
+
+void DataDlg::OnBnClickedCancel()
+{
+	// TODO: Add your control notification handler code here
+	CDialogEx::OnCancel();
 }

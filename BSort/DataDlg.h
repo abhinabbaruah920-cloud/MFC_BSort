@@ -23,4 +23,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnLbnSelchangeList1();
+	afx_msg void OnBnClickedCancel();
 };
