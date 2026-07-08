@@ -86,13 +86,12 @@ BOOL CBSortDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// Add "About..." menu item to system menu.
-
 	c1=c2=s1=s2=-1; //Initialize CPaintDC variables
 	size=0; // Initialize array size
 	SetWindowPos(NULL,700,110,0,0,SWP_NOSIZE|SWP_NOZORDER);
 	D.Create(IDD_DATADIALOG,this);				// Initialize Data Dialog box 
 	D.SetWindowPos(NULL,100,110,0,0,SWP_NOSIZE|SWP_NOZORDER);
-	D.ShowWindow(SW_SHOW);						// Show Data Dialog window function
+	
 	MD.Create(IDD_MERGEDIALOG,this);			// Creating the merge Dialog
 
 	// Adding Strings to ComboBox
@@ -215,7 +214,7 @@ HCURSOR CBSortDlg::OnQueryDragIcon()
 
 
 void CBSortDlg::OnBnClickedButton1()		// START BUTTON
-{
+{	
 	if(size==0){
 		AfxMessageBox(_T("Import CSV file first !!"));
 		return;
@@ -226,6 +225,7 @@ int choice = comboAlgo.GetCurSel();
 		AfxMessageBox(_T("Please select sorting algorithm"));
 		return;
 	}
+	D.ShowWindow(SW_SHOW);						// Show Data Dialog window function
 		switch(choice){
 			case 1:
 				D.list.ResetContent();
@@ -305,7 +305,7 @@ void CBSortDlg:: bubble(){		//Extending Bubble Sort funtion and implementation
 			Invalidate();
 			UpdateWindow();
 			Processmsg();
-			Sleep(150);
+			Sleep(200);
 
 			if(arr[j]>arr[j+1]){
 				s1=j;
@@ -313,7 +313,7 @@ void CBSortDlg:: bubble(){		//Extending Bubble Sort funtion and implementation
 				Invalidate();
 				UpdateWindow();
 				Processmsg();
-				Sleep(150);
+				Sleep(200);
 				int temp=arr[j];
 				arr[j]=arr[j+1];
 				arr[j+1]=temp;
@@ -324,7 +324,7 @@ void CBSortDlg:: bubble(){		//Extending Bubble Sort funtion and implementation
 				Invalidate();
 				UpdateWindow();
 				Processmsg();
-				Sleep(150);
+				Sleep(200);
 			}
 		}
 	}
@@ -332,58 +332,64 @@ void CBSortDlg:: bubble(){		//Extending Bubble Sort funtion and implementation
 	Invalidate();
 	UpdateWindow();
 	Processmsg();
-	Sleep(150);
+	Sleep(200);
 
 }
 
-void CBSortDlg:: selection(){			// Extending Selection Sort funtion and implementation
-	D.AddNo(arr,size);
-	for(int i=0;i<size-1;i++){
-    int min =i;
-		for(int j=i+1;j<size;j++){
-			c1=min;
-			c2=j;
-			s1=s2=-1;
+void CBSortDlg::selection(){
+    D.AddNo(arr,size);
+    for(int i=0;i<size-1;i++){
+        int min=i;
+        for(int j=i +1;j<size;j++){
+            c1=j;
+            c2=s1=s2=-1;
+            Invalidate();
+            UpdateWindow();
+            Processmsg();
+            Sleep(200);
+            if(arr[j]<arr[min]){
+                min=j;
+            }
+        }
 
-			Invalidate();
-			UpdateWindow();
-			Processmsg();
-			Sleep(150);
-			if(arr[j] < arr[min]){
-				min=j;
-				s1=min;
-				s2=-1;
-				Invalidate();
-				UpdateWindow();
-				Processmsg();
-				Sleep(150);
+        c1=c2=-1;
+        if(min!=i){
+            c1=i;
+            c2=min;
+            s1=s2=-1;
+            Invalidate();
+            UpdateWindow();
+            Processmsg();
+            Sleep(200);
+
+            c1=c2=-1;
+            s1=i;
+            s2=min;
+            Invalidate();
+            UpdateWindow();
+            Processmsg();
+            Sleep(200);
+
+            int temp =arr[i];
+            arr[i]=arr[min];
+            arr[min]=temp;
+            D.AddNo(arr,size);
+
+            Invalidate();
+            UpdateWindow();
+            Processmsg();
+            Sleep(200);
+
+            s1=s2=-1;
+            Invalidate();
+            UpdateWindow();
+            Processmsg();
+            Sleep(200);
         }
     }
-    if(min!=i){
-        s1=i;
-        s2= min;
-        Invalidate();
-        UpdateWindow();
-        Processmsg();
-        Sleep(150);
-
-        int temp=arr[i];
-        arr[i]= arr[min];
-        arr[min]=temp;
-
-        D.AddNo(arr,size);
-        Invalidate();
-        UpdateWindow();
-        Processmsg();
-        Sleep(150);
-    }
-}
-
-c1=c2=s1=s2=-1;
-Invalidate();
-UpdateWindow();
-Processmsg();
-Sleep(150);
+    c1=c2=s1=s2=-1;
+    Invalidate();
+    UpdateWindow();
 }
 
 void CBSortDlg::insertion(){				// Extending Insertion Sort funtion and implementation
@@ -397,14 +403,14 @@ void CBSortDlg::insertion(){				// Extending Insertion Sort funtion and implemen
             Invalidate();
             UpdateWindow();
             Processmsg();
-            Sleep(150);
+            Sleep(200);
             if(arr[j-1]>arr[j]){
                 s1=j-1;
                 s2=j;
                 Invalidate();
                 UpdateWindow();
                 Processmsg();
-                Sleep(150);
+                Sleep(200);
 
                 int temp=arr[j-1];
                 arr[j-1]=arr[j];
@@ -413,7 +419,7 @@ void CBSortDlg::insertion(){				// Extending Insertion Sort funtion and implemen
                 Invalidate();
                 UpdateWindow();
                 Processmsg();
-                Sleep(150);
+                Sleep(200);
                 j--;
             }
 			else{
@@ -425,7 +431,7 @@ c1=c2=s1=s2=-1;
     Invalidate();
     UpdateWindow();
     Processmsg();
-    Sleep(100);
+    Sleep(200);
 }
 
 // QUICK SORT implementation
@@ -438,7 +444,7 @@ void CBSortDlg::quick(){
     Invalidate();
     UpdateWindow();
     Processmsg();
-    Sleep(150);
+    Sleep(200);
 }
 
 void CBSortDlg::quicksort(int low,int high){
@@ -459,7 +465,7 @@ int CBSortDlg::partition(int low,int high){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(150);
+        Sleep(200);
 
         if(arr[j]<pivot){
             i++;
@@ -470,7 +476,7 @@ int CBSortDlg::partition(int low,int high){
                 Invalidate();
                 UpdateWindow();
                 Processmsg();
-                Sleep(150);
+                Sleep(200);
 
                 int temp=arr[i];
                 arr[i]=arr[j];
@@ -479,7 +485,7 @@ int CBSortDlg::partition(int low,int high){
                 Invalidate();
                 UpdateWindow();
                 Processmsg();
-                Sleep(150);
+                Sleep(200);
             }
         }
     }
@@ -491,7 +497,7 @@ int CBSortDlg::partition(int low,int high){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(150);
+        Sleep(200);
 
         int temp=arr[i+1];
         arr[i+1]=arr[high];
@@ -501,14 +507,14 @@ int CBSortDlg::partition(int low,int high){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(150);
+        Sleep(200);
     }
     
 c1=c2=s1=s2=-1;
     Invalidate();
     UpdateWindow();
     Processmsg();
-    Sleep(150);
+    Sleep(200);
     return i+1;
 }
 
@@ -539,7 +545,7 @@ void CBSortDlg::merge(int left,int mid,int right){
     }
     MD.SetArr(L,n1,R,n2);
     Processmsg();
-    Sleep(550);
+    Sleep(300);
     i=j=0;
     k=left;
 
@@ -549,7 +555,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(550);
+        Sleep(300);
 
         if(L[i]<=R[j]){
             arr[k]=L[i];
@@ -566,7 +572,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(550);
+        Sleep(300);
         k++;
     }
     while(i<n1){
@@ -575,7 +581,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(550);
+        Sleep(300);
         arr[k]= L[i];
         MD.AddMValue(L[i]);
         s1= k;
@@ -583,7 +589,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(550);
+        Sleep(300);
         i++;
         k++;
     }
@@ -594,7 +600,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(550);
+        Sleep(300);
 
         arr[k]=R[j];
         MD.AddMValue(R[j]);
@@ -602,7 +608,7 @@ void CBSortDlg::merge(int left,int mid,int right){
         Invalidate();
         UpdateWindow();
         Processmsg();
-        Sleep(550);
+        Sleep(300);
         j++;
         k++;
     }
@@ -611,5 +617,5 @@ void CBSortDlg::merge(int left,int mid,int right){
     Invalidate();
     UpdateWindow();
     Processmsg();
-    Sleep(550);
+    Sleep(300);
 }
